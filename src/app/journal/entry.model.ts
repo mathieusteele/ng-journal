@@ -1,7 +1,7 @@
 export class Entry {
-    constructor(
-      public id: string,
-      public title: string,
-      public content: string,
-    ) {}
-  }
+  constructor(
+    public _id: string,
+    public title: string,
+    public content: string
+  ) {}
+}

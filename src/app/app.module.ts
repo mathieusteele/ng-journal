@@ -7,20 +7,25 @@ import { AppComponent } from './app.component';
 import { EntryComponent } from './journal/entry/entry.component';
 import { JournalComponent } from './journal/journal.component';
 import { EntryListComponent } from './journal/entry-list/entry-list.component';
+import { EntryEditComponent } from './journal/entry-edit/entry-edit.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     EntryComponent,
     JournalComponent,
-    EntryListComponent
+    EntryListComponent,
+    EntryEditComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

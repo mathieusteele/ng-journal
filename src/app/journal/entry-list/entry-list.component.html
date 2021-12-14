@@ -1,3 +1,12 @@
-<p>entry-list works!</p>
+<div>
+  <p>Journal Entries:</p>
 
-<app-entry></app-entry>
+  <div class="bg-white shadow overflow-hidden rounded-md">
+    <ul role="list" class="divide-y divide-gray-200">
+      <app-entry
+        *ngFor="let journalEntry of entries"
+        [entry]="journalEntry"
+      ></app-entry>
+    </ul>
+  </div>
+</div>

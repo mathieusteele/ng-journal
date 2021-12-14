@@ -20,10 +20,14 @@ router.get("/", (req, res, next) => {
 
 router.post("/", (req, res, next) => {
 
+  console.log(req.body)
+
   const entry = new Entry({
     title: req.body.title,
     content: req.body.content,
   });
+
+  console.log(entry)
 
   entry
     .save()

@@ -4,23 +4,25 @@ import { Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class JournalService {
-
   entrySelectedEvent = new EventEmitter<Entry>();
   entryListChangedEvent = new Subject<Entry[]>();
 
   private entries: Entry[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getEntries(): Entry[] {
+    console.log('getEntries called');
     this.http
       .get<{ message: string; entries: Entry[] }>(
         'http://localhost:3000/journal'
       )
       .subscribe((responseData) => {
+        console.log('entered responseData');
+        console.log(responseData);
         this.entries = responseData.entries;
         this.entries.sort((a, b) => {
           if (a.title > b.title) {
@@ -40,7 +42,7 @@ export class JournalService {
   }
 
   getEntry(id: string): Entry | null {
-    let matches = this.entries.filter((entry) => entry.id === id);
+    let matches = this.entries.filter((entry) => entry._id === id);
     return matches.length ? matches[0] : null;
   }
 
@@ -49,9 +51,11 @@ export class JournalService {
       return;
     }
 
-    newEntry.id = '';
+    // newEntry.id = '';
 
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    console.log(newEntry);
 
     this.http
       .post<{ message: string; entry: Entry }>(
@@ -70,25 +74,21 @@ export class JournalService {
       return;
     }
 
-    let position = this.entries.findIndex(
-      (d) => d.id === originalEntry.id
-    );
+    let position = this.entries.findIndex((d) => d._id === originalEntry._id);
 
     if (position < 0) {
       return;
     }
 
-    newEntry.id = originalEntry.id;
+    newEntry._id = originalEntry._id;
     // newEntry._id = originalEntry._id;
 
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     this.http
-      .put(
-        'http://localhost:3000/journal/' + originalEntry.id,
-        newEntry,
-        { headers: headers }
-      )
+      .put('http://localhost:3000/journal/' + originalEntry._id, newEntry, {
+        headers: headers,
+      })
       .subscribe(() => {
         this.entries[position] = newEntry;
         this.entryListChangedEvent.next(this.entries.slice());
@@ -100,17 +100,17 @@ export class JournalService {
       return;
     }
 
-    const position = this.entries.findIndex((d) => d.id === entry.id);
+    const position = this.entries.findIndex((d) => d._id === entry._id);
 
     if (position < 0) {
       return;
     }
 
     this.http
-      .delete('http://localhost:3000/journal/' + entry.id)
+      .delete('http://localhost:3000/journal/' + entry._id)
       .subscribe(() => {
         const updatedEntries = this.entries.filter((filteredEntry) => {
-          return filteredEntry.id !== entry.id;
+          return filteredEntry._id !== entry._id;
         });
         this.entries = updatedEntries;
         this.entryListChangedEvent.next(this.entries.slice());

@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { EntryComponent } from './journal/entry/entry.component';
+import { EntryEditComponent } from './journal/entry-edit/entry-edit.component';
 import { JournalComponent } from './journal/journal.component';
 
 const routes: Routes = [
@@ -7,19 +9,19 @@ const routes: Routes = [
   {
     path: 'journal',
     component: JournalComponent,
-    // children: [
-    //   { path: 'new', component: DocumentEditComponent },
-    //   {
-    //     path: ':id',
-    //     component: DocumentDetailComponent,
-    //   },
-    //   { path: ':id/edit', component: DocumentEditComponent },
-    // ],
+    children: [
+      { path: 'new', component: EntryEditComponent },
+      {
+        path: ':id',
+        component: EntryComponent,
+      },
+      { path: ':id/edit', component: EntryEditComponent },
+    ],
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
